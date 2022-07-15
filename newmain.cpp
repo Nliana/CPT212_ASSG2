@@ -7,6 +7,7 @@ class Graph {
 	
    int V;
    list<pair<int, int>> *adj;
+   list<int> *adjNoWt;
    void isSCUtil(int u, bool visited[]);		// A recursive function to print DFS starting from v
    bool isCyclicUtil(int v, bool visited[], bool *recurStack);		// A recursive function to print DFS starting from v
    
@@ -15,17 +16,20 @@ class Graph {
    Graph(int V) {
       this->V = V;
       adj = new list<pair<int,int>>[V];
+      adjNoWt = new list<int>[V];
    }
    
    // Destructor
    ~Graph() {
       delete [] adj;
+      delete [] adjNoWt;
    }
    
    void menu();
    void addEdge(int u, int v, int w);	// To add a new edge
+   void addEdge2(int u, int v); // To add new edge without weight
    //void deleteEdge(int u, int v); // To delete existing edge
-   //void addRandomEdge(); // Add random edge
+   void addRandomEdge(); // Add random edge
    void printGraph();	// To print graph
    void WeightOfCities(); // List of weight between cities
    bool isStronglyConnected();	// To check whether graph is strongly connected
@@ -103,6 +107,83 @@ Graph Graph::transpose() {
 // Function to add new edge into adjacency list used by main()
 void Graph::addEdge(int u, int v, int w) {
    adj[u].push_back(make_pair(v, w));
+}
+
+// Function to add new edge without weight
+void Graph::addEdge2(int u, int v) {
+   adjNoWt[u].push_back(v);
+}
+
+// Function to add random edge
+void Graph::addRandomEdge() {
+	int distance;
+	int randSrc= rand()%5;
+	int randDest= rand()%5;
+	
+	switch(randSrc) {
+		case 0:
+			if (randDest==2) {
+				distance=1988;
+				adj[0].push_back(make_pair(2, 1988));
+				adjNoWt[0].push_back(2);
+			}
+			else if (randDest==3) {
+				distance=1239;
+				adj[0].push_back(make_pair(3, 1239));
+				adjNoWt[0].push_back(3);
+			}
+			
+		case 1:
+			if (randDest==3) {
+				distance=6602;
+				adj[1].push_back(make_pair(3, 6602));
+				adjNoWt[1].push_back(2);
+			}
+			else if (randDest==4) {
+				distance=8478;
+				adj[1].push_back(make_pair(4, 8478));
+				adjNoWt[1].push_back(4);
+			}
+			
+		case 2:
+			if (randDest==0) {
+				distance=1988;
+				adj[2].push_back(make_pair(0, 1988));
+				adjNoWt[2].push_back(0);
+			}
+			else if(randDest==4) {
+				distance=3318;
+				adj[2].push_back(make_pair(4, 3318));
+				adjNoWt[2].push_back(4);
+			}
+
+		case 3:
+			if (randDest==0) {
+				distance=1239;
+				adj[3].push_back(make_pair(0, 1239));
+				adjNoWt[3].push_back(0);
+			}
+			else if(randDest==1) {
+				distance=6602;
+				adj[3].push_back(make_pair(1, 6602));
+				adjNoWt[3].push_back(1);
+			}
+
+		case 4:
+			if (randDest==1) {
+				distance=8478;
+				adj[4].push_back(make_pair(1, 8478));
+				adjNoWt[4].push_back(1);
+			}
+			else if(randDest==2) {
+				distance=3318;
+				adj[4].push_back(make_pair(2, 3318));
+				adjNoWt[4].push_back(2);
+			}
+
+		default:
+			break;
+	}
 }
 
 /* Function to delete edge 
@@ -332,9 +413,13 @@ int main() {
 			else {
 				cout << "\t\t     This graph is not strongly connected.\n";
    				cout << "\n\n";
-   				//cout << adding random edges
-   				//function to add random edges
-   				// cout << graph now is strongly connected
+   				while (graph.isStronglyConnected()==false) {
+   					graph.addRandomEdge();
+				}
+				cout << "\n\n\t\t     Graph is finally strongly connected!\n";
+				cout << "\n\t\t     Displaying the new graph. . .\n";
+   				cout << "\n\t\t     " << system("PAUSE");
+   				cout << "\n\n";
    				graph.printGraph();
 			}
 			break;
@@ -354,9 +439,13 @@ int main() {
 			else {
 				cout << "\t\t     This graph does not contain cycle.\n";
    				cout << "\n\n";
-   				//cout << adding random edges
-   				//function to add random
-   				//cout << graph now finally contains cycle
+   				while (graph.isCyclic()==false) {
+   					graph.addRandomEdge();
+				}
+				cout << "\n\t\t     Graph finally contains cycle!\n";
+				cout << "\n\t\t     Displaying the new graph. . .\n";
+   				cout << "\n\t\t     " << system("PAUSE");
+   				cout << "\n\n";
    				graph.printGraph();
 			}
 			break;
@@ -381,7 +470,7 @@ int main() {
 			break;
 		}	
 	
-		cout << "\t\t   Please enter Y to continue or any key to exit: ";
+		cout << "\n\n\t\t   Please enter Y to continue or any key to exit: ";
 		cin >> start;
 		} while (start=='y' || start=='Y');
    
