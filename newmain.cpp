@@ -25,7 +25,6 @@ class Graph {
       delete [] adjNoWt;
    }
    
-   void menu();
    void addEdge(int u, int v, int w);	// To add a new edge
    void addEdge2(int u, int v); // To add new edge without weight
    //void deleteEdge(int u, int v); // To delete existing edge
@@ -38,7 +37,7 @@ class Graph {
    void shortestPath(int u, int v); // To output shortest path between source and destination
 };
 
-void Graph::menu(){
+void menu(){
 	
    cout << "\n\n\n\n\n";
    cout << "\t\t\t\t\t\tWELCOME\n\n";
@@ -66,9 +65,10 @@ void Graph::menu(){
 // Recursive function to print DFS starting from v used by isStronglyConnected()
 void Graph::isSCUtil(int v, bool visited[]) {
    visited[v] = true;
-   for(int i=0; i< sizeof(adj[v])/sizeof(int);i++)
-   		if (!visited[i])
-		   isSCUtil(i, visited);
+   list<int>::iterator i;
+    for (i = adjNoWt[v].begin(); i != adjNoWt[v].end(); ++i)
+   		if (!visited[*i])
+		   isSCUtil(*i, visited);
 }
 
 // Recursive function to print DFS starting from v used by isCyclic()
@@ -79,12 +79,12 @@ bool Graph::isCyclicUtil(int v, bool visited[], bool *recurStack)
         visited[v] = true;
         recurStack[v] = true;
         
-        //list<pair<int,int>>::iterator i;
-        for(int i=0; i< sizeof(adj[v])/sizeof(int);i++)
+        list<int>::iterator i;
+    	for (i = adjNoWt[v].begin(); i != adjNoWt[v].end(); ++i)
         {
-        	if ( !visited[i] && isCyclicUtil(i, visited, recurStack) )
+        	if ( !visited[*i] && isCyclicUtil(*i, visited, recurStack) )
                 return true;
-            else if (recurStack[i])
+            else if (recurStack[*i])
                 return true; 
         }
     }
@@ -97,9 +97,9 @@ Graph Graph::transpose() {
    Graph g(V);
    int wt;
    for (int v = 0; v < V; v++) {
-   		//list<pair<int,int>>::iterator i;
-      	for(int i = 0; i < adj[v].size(); ++i)
-        	g.adj[i].push_back(make_pair(v, wt));
+      	list<int>::iterator i;
+        for(i = adjNoWt[v].begin(); i != adjNoWt[v].end(); ++i)
+            g.adjNoWt[*i].push_back(v);
    }
    return g;
 }
@@ -203,7 +203,7 @@ void Graph::printGraph() {
         {
             v = i->first;
             w = i->second;
-	    cout << "\t\t\t\t   " << u;
+	    cout << "\t\t" << u;
             cout << " -> (" << v << ", " << w << ")";
         }
         cout << endl;
@@ -332,7 +332,7 @@ int main() {
    
    Graph graph(5);
    
-   graph.menu();
+   menu();
    
    cout << "\n\n\n";
    cout << "\t\t   Enter Y to start: ";
@@ -355,9 +355,14 @@ int main() {
 		graph.addEdge(1, 2, 5234);
 		graph.addEdge(2, 3, 1381);
 		graph.addEdge(3, 4, 2107);
-		graph.addEdge(4, 0, 1495);
+		graph.addEdge(0, 4, 1495);
 		
-		}
+		graph.addEdge2(0, 1);
+		graph.addEdge2(1, 2);
+		graph.addEdge2(2, 3);
+		graph.addEdge2(3, 4);
+		graph.addEdge2(0, 4);
+	}
  
 	 
    do {	
@@ -367,7 +372,7 @@ int main() {
    		cout << "\n\t\t\t '0 -> (1, 7009)' ";
    		cout << "\n\n (0 is source, -> is the directed edge pointing to, 1 is the destination and 7009 is the weight)\n";
    		
-   		cout << "\nThis is the default graph\n";
+   		cout << "\nThis is the default graph\n\n";
    		graph.printGraph();
    		
    		cout << "\t\t\t    The cities are:\n";
@@ -413,6 +418,8 @@ int main() {
 			else {
 				cout << "\t\t     This graph is not strongly connected.\n";
    				cout << "\n\n";
+   				cout << "\t\t     Program is adding random edges to the default graph. . .\n";
+   				
    				while (graph.isStronglyConnected()==false) {
    					graph.addRandomEdge();
 				}
@@ -439,6 +446,8 @@ int main() {
 			else {
 				cout << "\t\t     This graph does not contain cycle.\n";
    				cout << "\n\n";
+   				cout << "\t\t     Program is adding random edges to the default graph. . .\n";
+   				
    				while (graph.isCyclic()==false) {
    					graph.addRandomEdge();
 				}
@@ -473,17 +482,6 @@ int main() {
 		cout << "\n\n\t\t   Please enter Y to continue or any key to exit: ";
 		cin >> start;
 		} while (start=='y' || start=='Y');
-	
-	        cout << "Do you want to reset the programme? Enter Y as yes or N as No." ;
-                cin >> answer;
-   
-                if (answer=='y' || answer=='Y')
-                 {
-                    Graph.reset()
-                 };
-  
    
    return 0;
 }
-
-
