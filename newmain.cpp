@@ -203,7 +203,7 @@ void Graph::printGraph() {
         {
             v = i->first;
             w = i->second;
-	    cout << "\t\t   " << u;
+	    cout << "\t\t\t\t   " << u;
             cout << " -> (" << v << ", " << w << ")";
         }
         cout << endl;
