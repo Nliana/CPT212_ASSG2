@@ -199,11 +199,11 @@ void Graph::deleteEdge(int u, int v){
 void Graph::printGraph() {
 	int v, w;
 	for (int u = 0; u < V; u++) {
-		cout << "\t\t\t     " << u;
 		for (auto i = adj[u].begin(); i!=adj[u].end(); ++i)
         {
             v = i->first;
             w = i->second;
+	    cout << "\t\t   " << u;
             cout << " -> (" << v << ", " << w << ")";
         }
         cout << endl;
