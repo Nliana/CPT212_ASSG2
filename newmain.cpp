@@ -65,9 +65,10 @@ void menu(){
 
 // Recursive function to print DFS starting from v used by isStronglyConnected()
 void Graph::isSCUtil(int v, bool visited[]) {
-   visited[v] = true;
+   visited[v] = true; // assign true value, showing that have visited the vertex
+   // other adjacent vertices to the vertex above are also set to true
    list<int>::iterator i;
-    for (i = adjNoWt[v].begin(); i != adjNoWt[v].end(); ++i)
+    for (i = adjNoWt[v].begin(); i != adjNoWt[v].end(); ++i) 
    		if (!visited[*i])
 		   isSCUtil(*i, visited);
 }
@@ -107,12 +108,12 @@ Graph Graph::transpose() {
 
 // Function to add new edge into adjacency list used by main()
 void Graph::addEdge(int u, int v, int w) {
-   adj[u].push_back(make_pair(v, w));
+   adj[u].push_back(make_pair(v, w)); // function call
 }
 
 // Function to add new edge without weight
 void Graph::addEdge2(int u, int v) {
-   adjNoWt[u].push_back(v);
+   adjNoWt[u].push_back(v); // function call
 }
 
 // Function to add random edge
@@ -213,30 +214,31 @@ void Graph::printGraph() {
 }
 
 // Function 1
-// Function that returns true if graph is strongly connected 
+// Function that shows graph is strongly connected by returning true 
 bool Graph::isStronglyConnected() {
    
-   bool visited[V];
-   for (int i = 0; i < V; i++)
+   bool visited[V]; // initialise the variable
+   for (int i = 0; i < V; i++) // for loop to loop all the vertices to be false
    		visited[i] = false;
    	
-   isSCUtil(0, visited);
+   isSCUtil(0, visited); // function call to DFS the graph starting from 0
    
-   for (int i = 0; i < V; i++)
-      if (visited[i] == false)
-         return false;
+   for (int i = 0; i < V; i++) // for loop to check if there is still any vertices unvisited
+      if (visited[i] == false) // if there is any vertices unvisited, return false
+         return false; 
          
-   Graph gr = transpose();
+   Graph gr = transpose(); // initialising object and assigning it with reversed graph
    
-   for(int i = 0; i < V; i++)
+   for(int i = 0; i < V; i++) // for loop to loop all the vertices to be false
       visited[i] = false;
 	
-   gr.isSCUtil(0, visited);
-   for (int i = 0; i < V; i++)
-      if (visited[i] == false)
+   gr.isSCUtil(0, visited); // function call to DFS the reversed graph starting from 0
+   
+   for (int i = 0; i < V; i++) // for loop to check if there is still any vertices unvisited
+      if (visited[i] == false)  // if there is any vertices unvisited, return false
          return false;
          
-   return true;
+   return true; // if graph strongly connected return true
 }
 
 
@@ -295,30 +297,34 @@ void Graph::shortestPath(int src, int dest) {
 	
 int main() {
    
+   // Initialising the variables
    char start;
    int choice = 0;
    
+   // Initialising object graph
    Graph graph(5);
-   
+   // Calling menu function
    menu();
    
    cout << "\n\n\n";
    cout << "\t\t   Enter Y to start: ";
-   cin >> start;
+   cin >> start; // Input from user
    
+   // Will loop if user do not input 'y' or 'Y'
    while (start != 'y' && start != 'Y')
 		{
 			cout << "\t\t   PLEASE ENTER 'y' OR 'Y' ONLY:";
 			cin >> start;
 		}
-			
+	// clear command prompt		
    system("CLS");
-   
+	// if conditional statement has to be true for the contents to be run
    if (start=='y' || start=='Y') {
    		system("CLS");
    		cout << "\n\n\n\n\n";
    		cout << "Program is building the default graph. . .\n";
 		
+		// function call for adding edge into adjacent list
 		graph.addEdge(0, 1, 7009);
 		graph.addEdge(1, 2, 5234);
 		graph.addEdge(2, 3, 1381);
@@ -332,10 +338,10 @@ int main() {
 		graph.addEdge2(0, 4);
 	}
  
-	 
+	// do while is used to loop the program 
    do {	
-		system("CLS");
-   		
+		system("CLS"); //clear command prompt
+   		// output to user to understand how graph is displayed
    		cout << "The graph is represented like this example: \n";
    		cout << "\n\t\t\t '0 -> (1, 7009)' ";
    		cout << "\n\n (0 is source, -> is the directed edge pointing to, 1 is the destination and 7009 is the weight)\n";
@@ -362,108 +368,112 @@ int main() {
 		//asking for user input
    		cout << "Please enter 1, 2, 3, 4, 5 or 6: ";
    		cin >> choice;
-   
-   		while (choice < 0 && choice > 4)
+   		// Will loop if user do not input the correct no. from 1-6
+   		while (choice < 0 && choice > 6)
 		{
 			cout << "PLEASE ENTER 1, 2, 3 4, 5 OR 6 ONLY:";
 			cin >> choice;
 		}
 	
-	
+		// switch use to enable a systematic program 
 		switch (choice)
 		{
-			//clarification on first menu for total salary
+			// Outputs the results for strong connectivity function
 		case 1: system("CLS");
 			cout << "\n\n\n\n\n";
    			cout << "\t\t     Program is checking connectivity within the default graph. . .\n";
    			cout << "\n\t\t     "; 
-			system("PAUSE");
+			system("PAUSE"); // system pause
    			cout << "\n\n\n";
-   		
+   			// if graph is strongly connected
    			if (graph.isStronglyConnected()) {
    				cout << "\t\t     This graph is strongly connected.\n";
    				cout << "\n\n";
-   				graph.printGraph();
+   				graph.printGraph(); // print graph
 			}
+			// if graph is not strongly connected
 			else {
 				cout << "\t\t     This graph is not strongly connected.\n";
    				cout << "\n\n";
    				cout << "\t\t     Program is adding random edges to the default graph. . .\n";
-   				
+   				// random edge will be added until graph is strongly connected
    				while (graph.isStronglyConnected()==false) {
    					graph.addRandomEdge();
 				}
 				cout << "\n\n\t\t     Graph is finally strongly connected!\n";
 				cout << "\n\t\t     Displaying the new graph. . .\n";
-   				cout << "\n\t\t     " << system("PAUSE");
+   				cout << "\n\t\t     ";
+				system("PAUSE");
    				cout << "\n\n";
    				graph.printGraph();
 			}
 			break;
-		
+		// outputs the results for whether the graph contains cycle or not 
 		case 2: system("CLS");
 			cout << "\n\n\n\n\n";
    			cout << "\t\t     Program is checking whether the graph contains cycle. . .\n";
    			cout << "\n\n\t\t     ";
    			system("PAUSE");
 			cout << "\n\n\n";
-   		
+   			// if graph is cyclic
    			if (graph.isCyclic()) {
    				cout << "\t\t     This graph contains cycle.\n";
    				cout << "\n\n";
    				graph.printGraph();
 			}
+			// if graph is not cyclic, a random edge will be added until graph is cyclic
 			else {
 				cout << "\t\t     This graph does not contain cycle.\n";
    				cout << "\n\n";
    				cout << "\t\t     Program is adding random edges to the default graph. . .\n";
-   				
+   				// adding random edge, when there is no cycle
    				while (graph.isCyclic()==false) {
    					graph.addRandomEdge();
 				}
 				cout << "\n\t\t     Graph finally contains cycle!\n";
 				cout << "\n\t\t     Displaying the new graph. . .\n";
-   				cout << "\n\t\t     " << system("PAUSE");
+   				cout << "\n\t\t     ";
+				system("PAUSE");
    				cout << "\n\n";
    				graph.printGraph();
 			}
 			break;
-			
+		// outputs the shortest path for the graph	
 		case 3: system("CLS");
 			cout << "\n\n\n\n\n";
    			int src, dest;
 		    cout<<"\t\t     Choose the first city as the source - 0, 1, 2, 3, or 4: ";
-		    cin >> src;
+		    cin >> src; // accepts user input for the source vertex
 		    cout << "\n\t\t     Choose the second city as the destination - 0, 1, 2, 3, or 4: ";
-		    cin >> dest;
+		    cin >> dest; // accepts user input for the destination vertex
 		    cout << "\n\n\n";
 		    cout << "\t\t     Program is calculating the shortest path between " << src << " and " << dest << ". . .\n";
 		    cout << "\n\t\t     ";
 			system("PAUSE");
-		    graph.shortestPath(src, dest);
+		    graph.shortestPath(src, dest);  // function call to find shortest path
 			break;
-		
+		// outputs the minimum spanning tree between several cities from the graph
 		case 4: system("CLS");
 			cout << "The program is finding the minimum spanning tree between several cities...";
 		
 			break;
 		
-		
+		// outputs the edge remove function
 		case 5: system("CLS");
 			cout << "Choose which edge to remove from the graph..";
 		
 			break;
 		
-		
+		// outputs the reset function
 		case 6: system("CLS");
 			cout << "The program is resetting the graph back to default...";
 		
 			break;
 		}	
-	
+		// asking user whether they would like to continue using the program 
 		cout << "\n\n\t\t   Please enter Y to continue or any key to exit: ";
 		cin >> start;
-		} while (start=='y' || start=='Y');
+		} while (start=='y' || start=='Y'); // program will loop as long as user inpit 'y' or 'Y'
    
    return 0;
 }
