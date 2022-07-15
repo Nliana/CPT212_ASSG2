@@ -63,47 +63,47 @@ void menu(){
 	
 }
 
-// Recursive function to print DFS starting from v used by isStronglyConnected()
-void Graph::isSCUtil(int v, bool visited[]) {
-   visited[v] = true; // assign true value, showing that have visited the vertex
+// Recursive function to print DFS starting from ver used by isStronglyConnected()
+void Graph::isSCUtil(int ver, bool VISITED[]) {
+   VISITED[ver] = true; // assign true value, showing that have visited the vertex
    // other adjacent vertices to the vertex above are also set to true
    list<int>::iterator i;
-    for (i = adjNoWt[v].begin(); i != adjNoWt[v].end(); ++i) 
-   		if (!visited[*i])
-		   isSCUtil(*i, visited);
+    for (i = adjNoWt[ver].begin(); i != adjNoWt[ver].end(); ++i) 
+   		if (!VISITED[*i])
+		   isSCUtil(*i, VISITED);
 }
 
 // Recursive function to print DFS starting from v used by isCyclic()
-bool Graph::isCyclicUtil(int v, bool visited[], bool *recurStack)
+bool Graph::isCyclicUtil(int ver, bool VISITED[], bool *recurStack)
 {
-    if(visited[v] == false)
+    if(VISITED[ver] == false)
     {
-        visited[v] = true;
-        recurStack[v] = true;
+        VISITED[ver] = true;
+        recurStack[ver] = true;
         
         list<int>::iterator i;
-    	for (i = adjNoWt[v].begin(); i != adjNoWt[v].end(); ++i)
+    	for (i = adjNoWt[ver].begin(); i != adjNoWt[ver].end(); ++i)
         {
-        	if ( !visited[*i] && isCyclicUtil(*i, visited, recurStack) )
+        	if ( !VISITED[*i] && isCyclicUtil(*i, VISITED, recurStack) )
                 return true;
             else if (recurStack[*i])
                 return true; 
         }
     }
-    recurStack[v] = false; // Remove vertex from recursion stack
+    recurStack[ver] = false; // Remove vertex from recursion stack
     return false;
 }
 
 // Function to reverse graph used by isStronglyConnected()
 Graph Graph::transpose() {
-   Graph g(V);
+   Graph G(V); // intialise object and variable
    int wt;
-   for (int v = 0; v < V; v++) {
+   for (int v = 0; v < V; v++) { // reversing graph
       	list<int>::iterator i;
         for(i = adjNoWt[v].begin(); i != adjNoWt[v].end(); ++i)
-            g.adjNoWt[*i].push_back(v);
+            G.adjNoWt[*i].push_back(v);
    }
-   return g;
+   return G;
 }
 
 // Function to add new edge into adjacency list used by main()
@@ -118,10 +118,11 @@ void Graph::addEdge2(int u, int v) {
 
 // Function to add random edge
 void Graph::addRandomEdge() {
+	// Initialise variables
 	int distance;
 	int randSrc= rand()%5;
 	int randDest= rand()%5;
-	
+	// inputting into adjacent list according to user choice
 	switch(randSrc) {
 		case 0:
 			if (randDest==2) {
@@ -199,8 +200,8 @@ void Graph::deleteEdge(int u, int v){
 
 // Function to print the resulting adjacency list used by main()
 void Graph::printGraph() {
-	int v, w;
-	for (int u = 0; u < V; u++) {
+	int v, w; // initialise variable
+	for (int u = 0; u < V; u++) { // looping throught the adjacent list and print the contents
 		for (auto i = adj[u].begin(); i!=adj[u].end(); ++i)
         {
             v = i->first;
@@ -217,25 +218,25 @@ void Graph::printGraph() {
 // Function that shows graph is strongly connected by returning true 
 bool Graph::isStronglyConnected() {
    
-   bool visited[V]; // initialise the variable
+   bool VISITED[V]; // initialise the variable
    for (int i = 0; i < V; i++) // for loop to loop all the vertices to be false
-   		visited[i] = false;
+   		VISITED[i] = false;
    	
-   isSCUtil(0, visited); // function call to DFS the graph starting from 0
+   isSCUtil(0, VISITED); // function call to DFS the graph starting from 0
    
    for (int i = 0; i < V; i++) // for loop to check if there is still any vertices unvisited
-      if (visited[i] == false) // if there is any vertices unvisited, return false
+      if (VISITED[i] == false) // if there is any vertices unvisited, return false
          return false; 
          
-   Graph gr = transpose(); // initialising object and assigning it with reversed graph
+   Graph greverse = transpose(); // initialising object and assigning it with reversed graph
    
    for(int i = 0; i < V; i++) // for loop to loop all the vertices to be false
-      visited[i] = false;
+      VISITED[i] = false;
 	
-   gr.isSCUtil(0, visited); // function call to DFS the reversed graph starting from 0
+   greverse.isSCUtil(0, VISITED); // function call to DFS the reversed graph starting from 0
    
    for (int i = 0; i < V; i++) // for loop to check if there is still any vertices unvisited
-      if (visited[i] == false)  // if there is any vertices unvisited, return false
+      if (VISITED[i] == false)  // if there is any vertices unvisited, return false
          return false;
          
    return true; // if graph strongly connected return true
