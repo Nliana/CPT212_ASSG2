@@ -30,7 +30,6 @@ class Graph {
    //void deleteEdge(int u, int v); // To delete existing edge
    void addRandomEdge(); // Add random edge
    void printGraph();	// To print graph
-   void WeightOfCities(); // List of weight between cities
    bool isStronglyConnected();	// To check whether graph is strongly connected
    bool isCyclic();		// To check whether graph contains cycle
    Graph transpose();	// To create a reverse graph
@@ -59,6 +58,8 @@ void menu(){
    cout << "\t\t   2: \t Check if the graph contains any cycle.\n";
    cout << "\t\t   3: \t Find the shortest path betweent two cities.\n";
    cout << "\t\t   4: \t Find the minimum spanning tree between several cities.\n";
+   cout << "\t\t   5: \t Remove edge from the graph.\n";
+   cout << "\t\t   6: \t Reset the graph to default.\n";
 	
 }
 
@@ -210,40 +211,7 @@ void Graph::printGraph() {
 	}
 	cout << endl;
 }
-/*
-void WeightOfCities(){
-	
-	int size = 5;
-	int AddCity[size] = {};
-	AddCity[0].push_back(make_pair(2, 1988));
-	AddCity[0].push_back(make_pair(3, 1239));
-	AddCity[1].push_back(make_pair(3, 6601.88));
-	AddCity[1].push_back(make_pair(2, 1988));
-	AddCity[4].push_back(make_pair(2, 1988));
-}
 
-// Add random edge if graph not strongly connected
-void Graph::addRandomEdge(vector <pair<int, int> > adj[]) {
-    int wt;
-    int u = rand()%5;
-    int v = rand()%5;
-    
-    // find the wt for u and t
-    for (int u = 0; u < V; u++) {
-		//cout << "\t\t\t     " << u;
-		for (auto i = adj[u].begin(); i!=adj[u].end(); ++i)
-        {
-            if u = i->first;
-            w = i->second;
-            cout << " -> (" << v << ", " << w << ")";
-        }
-        cout << endl;
-	}
-	
-    //wt = ?
-    adj[u].push_back(make_pair(v, wt));
-}
-*/
 // Function 1
 // Function that returns true if graph is strongly connected 
 bool Graph::isStronglyConnected() {
@@ -373,7 +341,7 @@ int main() {
    		cout << "\n\n (0 is source, -> is the directed edge pointing to, 1 is the destination and 7009 is the weight)\n";
    		
    		cout << "\nThis is the default graph\n\n";
-   		graph.printGraph();
+   		graph.printGraph(); // printing the graph 
    		
    		cout << "\t\t\t    The cities are:\n";
    		cout << "\t\t\t    0 - \t Dublin, Ireland\n";
@@ -388,14 +356,16 @@ int main() {
    		cout << "2. Check if the graph contains any cycle.\n";
    		cout << "3. Find the shortest path betweent two cities.\n";
    		cout << "4. Find the minimum spanning tree between several cities.\n";
+   		cout << "5: Remove edge from the graph.\n";
+        cout << "6: Reset the graph to default.\n";
    		cout << "*************************************************************\n\n";
 		//asking for user input
-   		cout << "Please enter 1, 2, 3, or 4: ";
+   		cout << "Please enter 1, 2, 3, 4, 5 or 6: ";
    		cin >> choice;
    
    		while (choice < 0 && choice > 4)
 		{
-			cout << "PLEASE ENTER 1, 2, 3 OR 4 ONLY:";
+			cout << "PLEASE ENTER 1, 2, 3 4, 5 OR 6 ONLY:";
 			cin >> choice;
 		}
 	
@@ -475,6 +445,18 @@ int main() {
 		
 		case 4: system("CLS");
 			cout << "The program is finding the minimum spanning tree between several cities...";
+		
+			break;
+		
+		
+		case 5: system("CLS");
+			cout << "Choose which edge to remove from the graph..";
+		
+			break;
+		
+		
+		case 6: system("CLS");
+			cout << "The program is resetting the graph back to default...";
 		
 			break;
 		}	
