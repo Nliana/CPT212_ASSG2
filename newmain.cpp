@@ -295,6 +295,13 @@ void Graph::shortestPath(int src, int dest) {
     cout << "\n\t\t     Shortest path from " << src << " to " << dest << ": " << dist[dest] << endl;
 }
 
+void resetGraph (int u, int v, int w)
+{
+	int u = 0;
+	int v = 0;
+	int w = 0;
+}
+
 	
 int main() {
    
@@ -468,7 +475,7 @@ int main() {
 		// outputs the reset function
 		case 6: system("CLS");
 			cout << "The program is resetting the graph back to default...";
-		
+		        graph.resetGraph;
 			break;
 		}	
 		// asking user whether they would like to continue using the program 
