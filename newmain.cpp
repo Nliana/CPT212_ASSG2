@@ -473,6 +473,15 @@ int main() {
 		cout << "\n\n\t\t   Please enter Y to continue or any key to exit: ";
 		cin >> start;
 		} while (start=='y' || start=='Y');
+	
+	        cout << "Do you want to reset the programme? Enter Y as yes or N as No." ;
+                cin >> answer;
+   
+                if (answer=='y' || answer=='Y')
+                 {
+                    Graph.reset()
+                 };
+  
    
    return 0;
 }
